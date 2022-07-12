@@ -109,3 +109,7 @@ const createObj = () => {
 };
 
 const similarObjects = Array.from({length: 10}, createObj);
+
+
+const getObjectInfo = (obj) => obj;
+getObjectInfo(similarObjects);
