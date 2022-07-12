@@ -108,4 +108,4 @@ const createObj = () => {
   return resObj;
 };
 
-const similarObject = Array.from({length: 10}, createObj);
+const similarObjects = Array.from({length: 10}, createObj);
