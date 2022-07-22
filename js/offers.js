@@ -9,11 +9,14 @@ const offers = createSimilarObjects;
 // Функция заполнения объявления данными
 const fillCards = (node, classItem, data) => {
   const { author, offer } = data;
+
   const truncatedClass = (classItem.indexOf('text') > 0) ? classItem.replace('.popup__text--', '') : classItem.replace('.popup__', '');
 
   if (Object.keys(offer).includes(truncatedClass)) {
+    // Если значение в offer[TYPE] пустое, то скрываем узел
     if (!offer[truncatedClass]) {
       node.querySelector(classItem).remove();
+      return;
     }
 
     switch (truncatedClass) {
@@ -68,10 +71,7 @@ const renderCard = (template, data) => {
   const offerElement = template.cloneNode(true);
   const CLASSES = ['.popup__title', '.popup__text--address', '.popup__text--price', '.popup__type', '.popup__text--capacity', '.popup__text--time', '.popup__features', '.popup__description', '.popup__photos'];
 
-  for (let i = 0; i < CLASSES.length; i++) {
-    const currentClass = CLASSES[i];
-    fillCards(offerElement, currentClass, data);
-  }
+  CLASSES.forEach((currentClass) => fillCards(offerElement, currentClass, data));
 
   return offerElement;
 };
