@@ -1,6 +1,6 @@
 /*** Модуль "Данные" ***/
 
-import {getRandomArrayElement, getRandomInteger, getRandomFloat, getUniqueArrayValues, numberFormat} from './util.js';
+import {getRandomArrayElement, getRandomInteger, getRandomFloat, getUniqueArrayValues, numberFormat, translateOfferTypeToRus} from './util.js';
 
 const ROOM_TITLES = ['Luxury Lake', 'CappaCale Dale', 'Cassa mist', 'Sunset Treasury', 'White Cascade', 'GoldenFeet', 'Ocean Shores', 'The Corner of Main', 'Tropicana', 'Pearl apartments'];
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
@@ -18,7 +18,7 @@ const createObj = () => {
       title: getRandomArrayElement(ROOM_TITLES),
       address: '',
       price: getRandomInteger(20, 2000),
-      type: getRandomArrayElement(TYPES),
+      type: getRandomArrayElement(translateOfferTypeToRus(TYPES)),
       rooms: getRandomInteger(1, 4),
       guests: getRandomInteger(1, 200),
       checkin: getRandomArrayElement(HOURS),
