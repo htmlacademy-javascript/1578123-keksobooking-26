@@ -67,10 +67,10 @@ const fillCards = (node, classItem, data) => {
 
 // Функция отрисовки карточки с объявлением
 const renderCard = (template, data) => {
-  // Клонируем элемент из шаблона
-  const offerElement = template.cloneNode(true);
   const CLASSES = ['.popup__title', '.popup__text--address', '.popup__text--price', '.popup__type', '.popup__text--capacity', '.popup__text--time', '.popup__features', '.popup__description', '.popup__photos'];
 
+  // Клонируем элемент из шаблона
+  const offerElement = template.cloneNode(true);
   CLASSES.forEach((currentClass) => fillCards(offerElement, currentClass, data));
 
   return offerElement;
