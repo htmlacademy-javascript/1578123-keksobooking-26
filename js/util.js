@@ -44,7 +44,7 @@ const getRandomFloat = (min, max, precision) => {
 };
 
 // Функция получения случайного элемента массива
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomInteger(1, elements.length - 1)];
 
 // Функция получения указанного количества уникальных элементов из массива
 const getUniqueArrayValues = (array, num = array.length) => {
@@ -66,4 +66,30 @@ const getUniqueArrayValues = (array, num = array.length) => {
 // Функция добавления нулей перед числами до 10
 const numberFormat = (num, width) => new Array(+width + 1 - (String(num)).length).join('0') + num;
 
-export {isInt, isFloat, getRandomInteger, getRandomFloat, getRandomArrayElement, getUniqueArrayValues, numberFormat};
+// Функция преобразования названий типов-аппартаментов на русские
+const translateOfferTypeToRus = (types) => {
+  if (Array.isArray(types) && types.length) {
+    return (
+      types.map((type) => {
+        if (type.toString() === 'undefined') {
+          return;
+        }
+
+        switch (true) {
+          case type === 'flat':
+            return 'Квартира';
+          case type === 'bungalow':
+            return 'Бунгало';
+          case type === 'house':
+            return 'Дом';
+          case type === 'palace':
+            return 'Дворец';
+          case type === 'hotel':
+            return 'Отель';
+        }
+      })
+    );
+  }
+};
+
+export {isInt, isFloat, getRandomInteger, getRandomFloat, getRandomArrayElement, getUniqueArrayValues, numberFormat, translateOfferTypeToRus};
