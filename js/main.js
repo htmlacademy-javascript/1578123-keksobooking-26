@@ -2,4 +2,5 @@
 
 import './data.js';
 import './offers.js';
+import './form.js';
 

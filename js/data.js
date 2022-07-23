@@ -18,7 +18,7 @@ const createObj = () => {
       title: getRandomArrayElement(ROOM_TITLES),
       address: '',
       price: getRandomInteger(20, 2000),
-      type: getRandomArrayElement(translateOfferTypeToRus(TYPES)),
+      type: translateOfferTypeToRus(getRandomArrayElement(TYPES)),
       rooms: getRandomInteger(1, 4),
       guests: getRandomInteger(1, 200),
       checkin: getRandomArrayElement(HOURS),

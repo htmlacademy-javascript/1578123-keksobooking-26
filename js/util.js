@@ -67,29 +67,20 @@ const getUniqueArrayValues = (array, num = array.length) => {
 const numberFormat = (num, width) => new Array(+width + 1 - (String(num)).length).join('0') + num;
 
 // Функция преобразования названий типов-аппартаментов на русские
-const translateOfferTypeToRus = (types) => {
-  if (Array.isArray(types) && types.length) {
-    return (
-      types.map((type) => {
-        if (type.toString() === 'undefined') {
-          return;
-        }
+const translateOfferTypeToRus = (type) => {
+  const EQUIVALENTS = {
+    'flat': 'Квартира',
+    'bungalow': 'Бунгало',
+    'house': 'Дом',
+    'palace': 'Дворец',
+    'hotel': 'Отель'
+  };
 
-        switch (true) {
-          case type === 'flat':
-            return 'Квартира';
-          case type === 'bungalow':
-            return 'Бунгало';
-          case type === 'house':
-            return 'Дом';
-          case type === 'palace':
-            return 'Дворец';
-          case type === 'hotel':
-            return 'Отель';
-        }
-      })
-    );
+  if (!type) {
+    return;
   }
+
+  return EQUIVALENTS[type];
 };
 
 export {isInt, isFloat, getRandomInteger, getRandomFloat, getRandomArrayElement, getUniqueArrayValues, numberFormat, translateOfferTypeToRus};
