@@ -76,7 +76,7 @@ const onHouseTypeChange = () => {
   validatePrices();
 };
 
-houseType.addEventListener('change', () => onHouseTypeChange());
+houseType.addEventListener('change', onHouseTypeChange);
 
 // Сценарий проверки соответствия количества спальных мест количеству комнат
 const guestsCount = {
@@ -104,7 +104,7 @@ const onRoomNumberChange = () => {
   validateRooms();
 };
 
-roomNumber.addEventListener('change', () => onRoomNumberChange());
+roomNumber.addEventListener('change', onRoomNumberChange);
 
 
 // Функция перевода страницы в активное состояние
