@@ -49,7 +49,10 @@ pristine.addValidator(adForm.querySelector('#title'), validateTitle, 'Поле �
 pristine.addValidator(price, validatePrice, getPriceErrorMessage);
 
 adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
+
   pristine.validate();
 });
 
