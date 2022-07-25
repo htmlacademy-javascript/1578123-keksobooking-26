@@ -83,4 +83,11 @@ const translateOfferTypeToRus = (type) => {
   return EQUIVALENTS[type];
 };
 
-export {isInt, isFloat, getRandomInteger, getRandomFloat, getRandomArrayElement, getUniqueArrayValues, numberFormat, translateOfferTypeToRus};
+// Функция добавления атрибута disabled для узла
+const setDisabledState = (fields) => {
+  fields.forEach((element) => {
+    element.disabled = !element.disabled;
+  });
+};
+
+export {isInt, isFloat, getRandomInteger, getRandomFloat, getRandomArrayElement, getUniqueArrayValues, numberFormat, translateOfferTypeToRus, setDisabledState};
