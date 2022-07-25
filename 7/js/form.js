@@ -28,6 +28,31 @@ const onTimeChange = (evt) => {
 
 timeSection.addEventListener('change', (evt) => onTimeChange(evt));
 
+// Pristine validation
+const pristine = new Pristine(adForm, {
+  classTo: 'ad-form__element',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'span',
+  errorTextClass: 'form__error'
+});
+
+const validateTitle = (value) => value.length >= 30 && value.length <= 100;
+
+const validatePrice = (value) => {
+  const MAX_PRICE = 100000;
+  return value.length && Number(value) >= Number(price.placeholder) && Number(value) <= MAX_PRICE;
+};
+
+const getPriceErrorMessage = () => `Число в диапазоне от ${price.placeholder} до 100000`;
+
+pristine.addValidator(adForm.querySelector('#title'), validateTitle, 'Поле иметь значение в диапазоне от 30 до 100 символов');
+pristine.addValidator(price, validatePrice, getPriceErrorMessage);
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  pristine.validate();
+});
+
 // Синхронизации полей «Тип жилья» и «Цена за ночь»
 const pricesList = {
   'bungalow': ['0', 'Бунгало'],
@@ -40,7 +65,6 @@ const pricesList = {
 const validatePrices = () => {
   const houseValue = houseType.value;
   price.placeholder = pricesList[houseValue][0];
-  price.min = pricesList[houseValue][0];
 };
 
 validatePrices();
@@ -78,6 +102,7 @@ const onRoomNumberChange = () => {
 };
 
 roomNumber.addEventListener('change', () => onRoomNumberChange());
+
 
 // Функция перевода страницы в активное состояние
 const setPageToActive = () => {
