@@ -1,9 +1,7 @@
 /*** Модуль "Объявления" ***/
 import { similarObjects as createSimilarObjects} from './data.js';
 
-const mapCanvas = document.querySelector('#map-canvas');
 const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
-
 const offers = createSimilarObjects;
 
 // Функция заполнения объявления данными
@@ -76,6 +74,12 @@ const renderCard = (template, data) => {
   return offerElement;
 };
 
-const randomCard = renderCard(offersTemplate, offers[0]);
-mapCanvas.append(randomCard);
+const randomCards = [];
+
+for (let i = 0; i < offers.length; i++) {
+  const card = renderCard(offersTemplate, offers[i]);
+  randomCards.push(card);
+}
+
+export {renderCard, offers, randomCards};
 
