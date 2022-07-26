@@ -11,6 +11,26 @@ const MAIN_PIN_COORDINATES = {
   lng: 139.75175
 };
 
+// Макисмальная цена за аппартаменты
+const MAX_PRICE = 100000;
+
+// Ассоциативный массив: Количество комнат => количество человек
+const GUESTS_COUNT = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0']
+};
+
+// Прейскурант на жильё
+const PRICE_LIST = {
+  bungalow: '0',
+  flat: '1000',
+  hotel: '3000',
+  house: '5000',
+  palace: '10000',
+};
+
 const adForm = document.querySelector('.ad-form');
 const formFilters = document.querySelector('.map__filters');
 
@@ -55,10 +75,7 @@ const pristine = new Pristine(adForm, {
 
 const validateTitle = (value) => value.length >= 30 && value.length <= 100;
 
-const validatePrice = (value) => {
-  const MAX_PRICE = 100000;
-  return value.length && Number(value) >= Number(price.placeholder) && Number(value) <= MAX_PRICE;
-};
+const validatePrice = (value) => value.length && Number(value) >= Number(price.placeholder) && Number(value) <= MAX_PRICE;
 
 const getPriceErrorMessage = () => `Число в диапазоне от ${price.placeholder} до 100000`;
 
@@ -74,17 +91,9 @@ adForm.addEventListener('submit', (evt) => {
 });
 
 // Синхронизации полей «Тип жилья» и «Цена за ночь»
-const priceList = {
-  bungalow: '0',
-  flat: '1000',
-  hotel: '3000',
-  house: '5000',
-  palace: '10000',
-};
-
 const validatePrices = () => {
-  price.placeholder = priceList[houseType.value];
-  price.min = priceList[houseType.value];
+  price.placeholder = PRICE_LIST[houseType.value];
+  price.min = PRICE_LIST[houseType.value];
 };
 
 validatePrices();
@@ -96,19 +105,12 @@ const onHouseTypeChange = () => {
 houseType.addEventListener('change', onHouseTypeChange);
 
 // Сценарий проверки соответствия количества спальных мест количеству комнат
-const guestsCount = {
-  1: ['1'],
-  2: ['1', '2'],
-  3: ['1', '2', '3'],
-  100: ['0']
-};
-
 const validateRooms = () => {
   const roomValue = roomNumber.value;
 
   guestNumber.forEach((guest) => {
-    const isDisabled = (!guestsCount[roomValue].includes(guest.value));
-    guest.selected = guestsCount[roomValue][0] === guest.value;
+    const isDisabled = (!GUESTS_COUNT[roomValue].includes(guest.value));
+    guest.selected = GUESTS_COUNT[roomValue][0] === guest.value;
     guest.disabled = isDisabled;
     guest.hidden = isDisabled;
   });
@@ -123,6 +125,7 @@ const onRoomNumberChange = () => {
 
 roomNumber.addEventListener('change', onRoomNumberChange);
 
+// Сценарий работы превью и аватарок
 const getAvatarPreview = () => renderPhoto(avatarLoader, getAvatar);
 const getPhotoPreview = () => renderPhoto(photoLoader, getPhoto);
 
@@ -153,6 +156,7 @@ const setPageToUnactive = () => {
   setCoordinates(address, {lat: 0, lng: 0}, 5);
 };
 
+// Функция отправки формы (submit)
 const submitForm = (cb) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -182,7 +186,7 @@ export {
   submitForm,
   adForm,
   houseType,
-  priceList,
+  PRICE_LIST,
   price,
   MAIN_PIN_COORDINATES,
   address,

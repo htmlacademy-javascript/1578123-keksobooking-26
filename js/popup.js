@@ -5,6 +5,7 @@ const errorPopup = document.querySelector('#error').content.querySelector('.erro
 const popupErrorMessage = errorPopup.querySelector('.error__message');
 const errorButton = errorPopup.querySelector('.error__button');
 
+// Функция показа модального окна при успешной отправке формы
 const showModalSuccess = () => {
   document.body.appendChild(successPopup);
 
@@ -23,6 +24,7 @@ const showModalSuccess = () => {
   });
 };
 
+// Функция показа модального окна при неудачной отправке формы
 const showModalError = () => {
   popupErrorMessage.textContent = 'Ошибка загрузки данных';
   document.body.appendChild(errorPopup);

@@ -1,6 +1,6 @@
 /** Модуль "Слайдер" **/
 
-import { adForm, houseType, priceList, price } from './form.js';
+import { adForm, houseType, PRICE_LIST as priceList, price } from './form.js';
 
 const sliderElement = adForm.querySelector('.ad-form__slider');
 

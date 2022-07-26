@@ -2,7 +2,6 @@
 
 import { renderMap, mainPinMarkerCoordinates } from './map.js';
 import { disableSlider } from './slider.js';
-import './data.js';
 import { setPageToUnactive, onResetButtonClick, submitForm } from './form.js';
 import { getData } from './api.js';
 import { activateMapFilters, checkAllFilters, changeFilters } from './filter.js';

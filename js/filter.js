@@ -5,9 +5,7 @@ import { createMarker, clearMarker } from './map.js';
 const OFFERS_COUNT = 10;
 const INIT_VALUE = 'any';
 
-const mapFilters = document.querySelector('.map__filters');
-
-const priceMapFilter = {
+const PRICE_MAP_FILTER = {
   low: {
     start: 0,
     end: 10000,
@@ -22,6 +20,7 @@ const priceMapFilter = {
   },
 };
 
+const mapFilters = document.querySelector('.map__filters');
 const mapFiltersList = mapFilters.children;
 const typeFilter = mapFilters.querySelector('#housing-type');
 const priceFilter = mapFilters.querySelector('#housing-price');
@@ -38,6 +37,7 @@ const activateMapFilters = () => {
   }
 };
 
+// Функция проверки фильтра удобств
 const checkFeatures = (el) => Array.from(featuresFilter).every((featureFilter) => {
   if (!featureFilter.checked) {
     return true;
@@ -49,7 +49,7 @@ const checkFeatures = (el) => Array.from(featuresFilter).every((featureFilter) =
 });
 
 const checkType = (el) => typeFilter.value === el.offer.type || typeFilter.value === INIT_VALUE;
-const checkPrice = (el) => priceFilter.value === INIT_VALUE || (el.offer.price >= priceMapFilter[priceFilter.value].start && el.offer.price <= priceMapFilter[priceFilter.value].end);
+const checkPrice = (el) => priceFilter.value === INIT_VALUE || (el.offer.price >= PRICE_MAP_FILTER[priceFilter.value].start && el.offer.price <= PRICE_MAP_FILTER[priceFilter.value].end);
 const checkRooms = (el) => el.offer.rooms === Number(roomsFilter.value) || roomsFilter.value === INIT_VALUE;
 const checkGuests = (el) => el.offer.guests === Number(guestsFilter.value) || guestsFilter.value === INIT_VALUE;
 
