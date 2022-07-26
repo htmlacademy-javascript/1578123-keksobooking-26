@@ -90,4 +90,24 @@ const setDisabledState = (fields) => {
   });
 };
 
-export {isInt, isFloat, getRandomInteger, getRandomFloat, getRandomArrayElement, getUniqueArrayValues, numberFormat, translateOfferTypeToRus, setDisabledState};
+// Сеттер координат
+const setCoordinates = (target, coordinates, precision) => {
+  if (!precision) {
+    precision = 5;
+  }
+
+  target.value = `${Number(coordinates.lat).toFixed(precision)}, ${Number(coordinates.lng).toFixed(precision)}`;
+};
+
+export {
+  isInt,
+  isFloat,
+  getRandomInteger,
+  getRandomFloat,
+  getRandomArrayElement,
+  getUniqueArrayValues,
+  numberFormat,
+  translateOfferTypeToRus,
+  setDisabledState,
+  setCoordinates
+};

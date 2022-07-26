@@ -1,10 +1,18 @@
 /** Модуль "Формы" **/
-import { setDisabledState } from './util.js';
+import { setDisabledState, setCoordinates } from './util.js';
+import { resetPage } from './map.js';
+
+// Координаты главной метки (по умолчанию)
+const MAIN_PIN_COORDINATES = {
+  lat: 35.69034,
+  lng: 139.75175
+};
 
 const adForm = document.querySelector('.ad-form');
 const formFilters = document.querySelector('.map__filters');
-const disabledFields = document.querySelectorAll('select.map__filter', 'fieldset');
-const address = document.querySelector('#address');
+const disabledFields = adForm.querySelectorAll('select.map__filter', 'fieldset');
+const resetForm = adForm.querySelector('ad-form__reset');
+const address = adForm.querySelector('#address');
 
 // Устанавливаем адресу атрибут "readonly"
 address.setAttribute('readonly', true);
@@ -113,7 +121,8 @@ const setPageToActive = () => {
   formFilters.classList.remove('map__filters--disabled');
 
   setDisabledState(disabledFields);
-  address.value = '0, 0';
+  //sliderElement.removeAttribute('disabled', true);
+  setCoordinates(address, {lat: 0, lng: 0}, 5);
 };
 
 // Функция перевода страницы в неактивное состояние
@@ -122,11 +131,15 @@ const setPageToUnactive = () => {
   formFilters.classList.add('map__filters--disabled');
 
   setDisabledState(disabledFields);
-
-  address.value = '0, 0';
+  setCoordinates(address, {lat: 0, lng: 0}, 5);
 };
 
-setPageToUnactive();
-setPageToActive();
+// Обработчик кнопки сброса (reset)
+const onResetButtonClick = () => {
+  resetForm.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetPage();
+  });
+};
 
-export {setPageToActive, setPageToUnactive};
+export {setPageToActive, setPageToUnactive, onResetButtonClick, adForm, houseType, pricesList, price, MAIN_PIN_COORDINATES, address};
