@@ -1,6 +1,6 @@
 /** Модуль "Слайдер" **/
 
-import { adForm, houseType, pricesList, price } from './form.js';
+import { adForm, houseType, PRICE_LIST as priceList, price } from './form.js';
 
 const sliderElement = adForm.querySelector('.ad-form__slider');
 
@@ -29,7 +29,7 @@ sliderElement.noUiSlider.on('slide', () => {
 
 houseType.addEventListener('change', (evt) => {
   const currentValue = evt.target.value;
-  const newStartValue = Number(pricesList[currentValue][0]);
+  const newStartValue = Number(priceList[currentValue]);
   sliderElement.noUiSlider.set(newStartValue);
 });
 
@@ -40,5 +40,6 @@ price.addEventListener('input', (evt) => {
 
 const disableSlider = () => sliderElement.setAttribute('disabled', true);
 const activateSlider = () => sliderElement.removeAttribute('disabled', true);
+const resetSlider = () => sliderElement.noUiSlider.set(0);
 
-export {activateSlider, disableSlider};
+export {activateSlider, disableSlider, resetSlider};

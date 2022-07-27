@@ -1,85 +1,105 @@
 /*** Модуль "Объявления" ***/
-import { similarObjects as createSimilarObjects} from './data.js';
 
+const HOUSE_TYPES = {
+  'bungalow': 'Бунгало',
+  'flat': 'Квартира',
+  'hotel': 'Отель',
+  'house': 'Дом',
+  'palace': 'Дворец'
+};
+
+// Шаблон для функции renderCard
 const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
-const offers = createSimilarObjects;
 
-// Функция заполнения объявления данными
-const fillCards = (node, classItem, data) => {
-  const { author, offer } = data;
-
-  const truncatedClass = (classItem.indexOf('text') > 0) ? classItem.replace('.popup__text--', '') : classItem.replace('.popup__', '');
-
-  if (Object.keys(offer).includes(truncatedClass)) {
-    // Если значение в offer[TYPE] пустое, то скрываем узел
-    if (!offer[truncatedClass]) {
-      node.querySelector(classItem).remove();
-      return;
-    }
-
-    switch (truncatedClass) {
-      case 'price':
-        node.querySelector(classItem).textContent = `${offer[truncatedClass]} ₽/ночь`;
-        break;
-
-      case 'features': {
-        const featuresContainer = node.querySelector(classItem);
-        const featuresList = featuresContainer.querySelectorAll('.popup__feature');
-        const objectFeatures = offer[truncatedClass];
-
-        featuresList.forEach((featureListItem) => {
-          const isFound = objectFeatures.some((objectFeature) => featureListItem.classList.contains(`popup__feature--${  objectFeature}`));
-
-          if (!isFound) {
-            featureListItem.remove();
-          }
-        });
-        break;
-      }
-
-      case 'avatar':
-        node.querySelector(classItem).src = author[truncatedClass];
-        break;
-
-      case 'photos': {
-        const photosContainer = node.querySelector(classItem);
-        const photoTemplate = photosContainer.querySelector('.popup__photo');
-        photoTemplate.src = offer[truncatedClass];
-        break;
-      }
-
-      default:
-        node.querySelector(classItem).textContent = offer[truncatedClass];
-    }
-  } else {
-    switch (truncatedClass) {
-      case 'capacity':
-        node.querySelector(classItem).textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
-        break;
-      case 'time':
-        node.querySelector(classItem).textContent =`Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-        break;
-    }
+// Функция склонения окончаний для комнат
+const declineRoomsTitle = (count) => {
+  switch (count) {
+    case 1:
+      return 'комната';
+    case 2:
+    case 3:
+    case 4:
+      return 'комнаты';
+    default:
+      return 'комнат';
   }
 };
 
-// Функция отрисовки карточки с объявлением
-const renderCard = (template, data) => {
-  const CLASSES = ['.popup__title', '.popup__text--address', '.popup__text--price', '.popup__type', '.popup__text--capacity', '.popup__text--time', '.popup__features', '.popup__description', '.popup__photos'];
-
-  // Клонируем элемент из шаблона
-  const offerElement = template.cloneNode(true);
-  CLASSES.forEach((currentClass) => fillCards(offerElement, currentClass, data));
-
-  return offerElement;
+// Функция склонения окончаний для гостей
+const declineGuestsTitle = (count) => {
+  if (count === 0) {
+    return 'не для гостей';
+  }
+  if (count > 1) {
+    return `для ${count} гостей`;
+  }
+  return `для ${count} гостя`;
 };
 
-const randomCards = [];
+// Функция генерации удобств
+const createFeatures = (features) => {
+  const fragment = document.createDocumentFragment();
+  features.forEach((item) => {
+    const feature = document.createElement('li');
+    feature.classList.add('popup__feature', `popup__feature--${item}`);
+    fragment.append(feature);
+  });
 
-for (let i = 0; i < offers.length; i++) {
-  const card = renderCard(offersTemplate, offers[i]);
-  randomCards.push(card);
-}
+  return fragment;
+};
 
-export {renderCard, offers, randomCards};
+// Функция генерации фотографий
+const createPhotos = (photos) => {
+  const fragment = document.createDocumentFragment();
+
+  photos.forEach((photo) => {
+    const newPhoto = document.createElement('img');
+    newPhoto.src = photo;
+    newPhoto.classList.add('popup__photo');
+    newPhoto.alt = 'Фотография жилья';
+    newPhoto.setAttribute('width', '45');
+    newPhoto.setAttribute('height', '40');
+    fragment.append(newPhoto);
+  });
+
+  return fragment;
+};
+
+// Функция клонирует и заполняет шаблон cardTemplate
+const renderCard = ({ author, offer }) => {
+  const card = offersTemplate.cloneNode(true);
+  const features = card.querySelector('.popup__features');
+  const photos = card.querySelector('.popup__photos');
+
+  card.querySelector('.popup__avatar').src = author.avatar || '';
+  card.querySelector('.popup__title').textContent = offer.title || '';
+  card.querySelector('.popup__text--address').textContent = offer.address || '';
+  card.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь` || '';
+  card.querySelector('.popup__type').textContent = HOUSE_TYPES[offer.type] || '';
+  card.querySelector('.popup__text--capacity').textContent = (!offer.rooms || !Number.isInteger(offer.guests)) ? '' : `${offer.rooms} ${declineRoomsTitle(offer.rooms)} ${declineGuestsTitle(offer.guests)}`;
+  card.querySelector('.popup__text--time').textContent = (!offer.checkin || !offer.checkout) ? '' : `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+
+  features.innerHTML = '';
+
+  if (offer.features) {
+    const newFeatureElements = createFeatures(offer.features);
+    features.append(newFeatureElements);
+  } else {
+    features.remove();
+  }
+
+  card.querySelector('.popup__description').textContent = offer.description || '';
+
+  photos.innerHTML = '';
+  if (offer.photos) {
+    const newPhotoElements = createPhotos(offer.photos);
+    photos.append(newPhotoElements);
+  } else {
+    photos.remove();
+  }
+
+  return card;
+};
+
+export {renderCard};
 

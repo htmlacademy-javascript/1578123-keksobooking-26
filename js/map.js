@@ -1,8 +1,9 @@
 /** Модуль "Карта" **/
-import { adForm, address, MAIN_PIN_COORDINATES, setPageToActive } from './form.js';
+import { adForm, address, MAIN_PIN_COORDINATES, setPageToActive, onHouseTypeChange } from './form.js';
 import { setCoordinates } from './util.js';
-import { offers, randomCards } from './offers.js';
-import { activateSlider } from './slider.js';
+import { renderCard } from './offers.js';
+import { activateSlider, resetSlider } from './slider.js';
+import { mapFilters } from './filter.js';
 
 // Масштаб (зум)
 const MAP_ZOOM = 12;
@@ -51,14 +52,13 @@ const icon = L.icon({
 const markerGroup = L.layerGroup().addTo(map);
 
 // Функция создания метки
-const createMarker = (point, index) => {
-  const { lat, lng } = point;
-  const marker = L.marker({lat, lng}, {icon});
-  marker.addTo(markerGroup).bindPopup(randomCards[index], {keepInView: true, closeOnEscapeKey: true});
+const createMarker = (data) => {
+  const marker = L.marker(data.location, {icon});
+  marker.addTo(markerGroup).bindPopup(renderCard(data), {keepInView: true, closeOnEscapeKey: true});
 };
 
-// Рендерим балуны
-offers.forEach(({location}, index) => createMarker(location, index));
+// Функция очистки слоя с метками
+const clearMarker = () => markerGroup.clearLayers();
 
 // Функция возврата страницы к начальному состоянию (сброс)
 const resetPage = () => {
@@ -66,7 +66,11 @@ const resetPage = () => {
   map.setView(MAIN_PIN_COORDINATES, MAP_ZOOM);
   adForm.reset();
   setCoordinates(address, mainPinMarker.getLatLng());
+  onHouseTypeChange();
+  resetSlider();
+  mapFilters.reset();
+  clearMarker();
 };
 
-export {renderMap, mainPinMarkerCoordinates, resetPage};
+export {renderMap, mainPinMarkerCoordinates, resetPage, createMarker, clearMarker};
 
