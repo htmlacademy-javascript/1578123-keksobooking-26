@@ -99,33 +99,6 @@ const setCoordinates = (target, coordinates, precision) => {
   target.value = `${Number(coordinates.lat).toFixed(precision)}, ${Number(coordinates.lng).toFixed(precision)}`;
 };
 
-// Функция создания аватара
-const getAvatar = (node, form, url) => {
-  const fragment = document.createDocumentFragment();
-  node.src = url;
-  fragment.append(node);
-  form.innerHTML = '';
-  form.append(fragment);
-};
-
-// Функция создания фотографии жилья
-const getPhoto = (form, url) => {
-  const WIDTH = 70;
-  const HEIGHT = 70;
-
-  form.innerHTML = '';
-  const fragment = document.createDocumentFragment();
-  const element = document.createElement('img');
-
-  element.src = url;
-  element.alt = 'Фото жилья';
-  element.width = WIDTH;
-  element.height = HEIGHT;
-
-  fragment.append(element);
-  form.append(fragment);
-};
-
 // Функция отрисовки фотографии
 const renderPhoto = (chooseFile, cb) => {
   const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
@@ -190,8 +163,6 @@ export {
   translateOfferTypeToRus,
   setDisabledState,
   setCoordinates,
-  getAvatar,
-  getPhoto,
   renderPhoto,
   debounce,
   throttle
