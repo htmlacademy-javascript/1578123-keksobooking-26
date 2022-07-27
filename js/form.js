@@ -1,5 +1,5 @@
 /** Модуль "Формы" **/
-import { setDisabledState, setCoordinates, getAvatar, getPhoto, renderPhoto } from './util.js';
+import { setDisabledState, setCoordinates, renderPhoto } from './util.js';
 import { resetPage } from './map.js';
 import { sendData } from './api.js';
 import { mapFiltersList } from './filter.js';
@@ -30,6 +30,10 @@ const PRICE_LIST = {
   house: '5000',
   palace: '10000',
 };
+
+// Размеры фотографии жилья
+const IMG_WIDTH = 70;
+const IMG_HEIGHT = 70;
 
 const adForm = document.querySelector('.ad-form');
 const formFilters = document.querySelector('.map__filters');
@@ -116,6 +120,28 @@ const onRoomNumberChange = () => {
 };
 
 roomNumber.addEventListener('change', onRoomNumberChange);
+
+// Функция создания аватара (Ваша фотография)
+const getAvatar = (result) => {
+  const fragment = document.createDocumentFragment();
+  avatarPreview.src = result;
+  fragment.append(avatarPreview);
+  formAvatar.innerHTML = '';
+  formAvatar.append(fragment);
+};
+
+// Функция создания фото жилья
+const getPhoto = (result) => {
+  formPhoto.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  const element = document.createElement('img');
+  element.src = result;
+  element.alt = 'Фото жилья';
+  element.width = IMG_WIDTH;
+  element.height = IMG_HEIGHT;
+  fragment.append(element);
+  formPhoto.append(fragment);
+};
 
 // Сценарий работы превью и аватарок
 const getAvatarPreview = () => renderPhoto(avatarLoader, getAvatar);
