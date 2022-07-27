@@ -144,7 +144,7 @@ function throttle (callback, delayBetweenFrames) {
 
     // Если время между кадрами больше задержки,
     // вызываем наш колбэк и перезаписываем lastTime
-    // временем "последнего кадра"
+    // временем "последнего кадра" //
     if (now - lastTime >= delayBetweenFrames) {
       callback.apply(this, rest);
       lastTime = now;
