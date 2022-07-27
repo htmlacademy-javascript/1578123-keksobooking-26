@@ -82,13 +82,13 @@ const getPriceErrorMessage = () => `Число в диапазоне от ${pric
 pristine.addValidator(adForm.querySelector('#title'), validateTitle, 'Поле иметь значение в диапазоне от 30 до 100 символов');
 pristine.addValidator(price, validatePrice, getPriceErrorMessage);
 
-adForm.addEventListener('submit', (evt) => {
+/*adForm.addEventListener('submit', (evt) => {
   if (!pristine.validate()) {
     evt.preventDefault();
   }
 
   pristine.validate();
-});
+});*/
 
 // Синхронизации полей «Тип жилья» и «Цена за ночь»
 const validatePrices = () => {
@@ -160,6 +160,11 @@ const setPageToUnactive = () => {
 const submitForm = (cb) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
+
+    if (!pristine.validate()) {
+      return;
+    }
+
     const formData = new FormData(evt.target);
     sendData(() => {
       showModalSuccess();
