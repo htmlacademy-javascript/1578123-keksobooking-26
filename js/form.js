@@ -130,7 +130,7 @@ const getAvatar = (result) => {
   formAvatar.append(fragment);
 };
 
-// Функция создания превью фотографии жилья
+// Функция создания фото жилья
 const getPhoto = (result) => {
   formPhoto.innerHTML = '';
   const fragment = document.createDocumentFragment();
