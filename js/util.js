@@ -1,5 +1,8 @@
 /*** Модуль "Вспомогательные функции для проекта" ***/
 
+// Количество знаков после запятой для координат
+const PRECISION = 5;
+
 // Функция проверки на целое число
 const isInt = (num) => Number(num) === num && num % 1 === 0;
 
@@ -91,11 +94,7 @@ const setDisabledState = (fields) => {
 };
 
 // Сеттер координат
-const setCoordinates = (target, coordinates, precision) => {
-  if (!precision) {
-    precision = 5;
-  }
-
+const setCoordinates = (target, coordinates, precision = PRECISION) => {
   target.value = `${Number(coordinates.lat).toFixed(precision)}, ${Number(coordinates.lng).toFixed(precision)}`;
 };
 
@@ -153,6 +152,7 @@ function throttle (callback, delayBetweenFrames) {
 }
 
 export {
+  PRECISION,
   isInt,
   isFloat,
   getRandomInteger,

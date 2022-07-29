@@ -1,12 +1,14 @@
 /** Модуль взаимодействия с сервером **/
 
-const SERVER_DATA = 'https://26.javascript.pages.academy/keksobooking/data'; // url для получения данных с сервера
-const SERVER_ADDRESS = 'https://26.javascript.pages.academy/keksobooking'; // url для отправки данных из формы на сервер
+const urls = {
+  //LOAD: 'https://26.javascript.pages.academy/keksobooking/data', // url для получения данных с сервера
+  UPLOAD: 'https://26.javascript.pages.academy/keksobooking' // url для отправки данных из формы на сервер
+};
 
 // Функция получения данных с сервера
 const getData = async (onSuccess, onError) => {
   try {
-    const response = await fetch(SERVER_DATA);
+    const response = await fetch(urls.LOAD);
 
     if (!response.ok) {
       throw new Error(`${response.status} ${response.statusText}`);
@@ -22,7 +24,7 @@ const getData = async (onSuccess, onError) => {
 // Функция отправки формы на сервер
 const sendData = async (onSuccess, onError, body) => {
   try {
-    const response = await fetch(SERVER_ADDRESS, {method: 'POST', body});
+    const response = await fetch(urls.UPLOAD, {method: 'POST', body});
 
     if (response.ok) {
       onSuccess('Объявление успешно опубликовано!');

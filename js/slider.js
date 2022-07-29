@@ -38,8 +38,8 @@ price.addEventListener('input', (evt) => {
   sliderElement.noUiSlider.set(newStartValue);
 });
 
-const disableSlider = () => sliderElement.setAttribute('disabled', true);
-const activateSlider = () => sliderElement.removeAttribute('disabled', true);
+const disableSlider = () => sliderElement.setAttribute('disabled', 'true');
+const activateSlider = () => sliderElement.removeAttribute('disabled');
 const resetSlider = () => sliderElement.noUiSlider.set(0);
 
 export {activateSlider, disableSlider, resetSlider};

@@ -1,9 +1,13 @@
 /** Модуль "Формы" **/
-import { setDisabledState, setCoordinates, renderPhoto } from './util.js';
+import { setDisabledState, setCoordinates, renderPhoto, PRECISION } from './util.js';
 import { resetPage } from './map.js';
 import { sendData } from './api.js';
 import { mapFiltersList } from './filter.js';
 import { showModalSuccess, showModalError } from './popup.js';
+
+// Константы для классов
+const AD_FORM_DISABLED = 'ad-form--disabled';
+const MAP_FILTERS_DISABLED = 'map__filters--disabled';
 
 // Координаты главной метки (по умолчанию)
 const MAIN_PIN_COORDINATES = {
@@ -38,7 +42,7 @@ const IMG_HEIGHT = 70;
 const adForm = document.querySelector('.ad-form');
 const formFilters = document.querySelector('.map__filters');
 
-const disabledFields = adForm.querySelectorAll('select.map__filter', 'fieldset');
+const disabledFields = adForm.querySelectorAll('select.map__filter, fieldset');
 const resetForm = adForm.querySelector('.ad-form__reset');
 const address = adForm.querySelector('#address');
 
@@ -153,25 +157,24 @@ getPhotoPreview();
 
 // Функция перевода страницы в активное состояние
 const setPageToActive = () => {
-  adForm.classList.remove('ad-form--disabled');
-  formFilters.classList.remove('map__filters--disabled');
+  adForm.classList.remove(AD_FORM_DISABLED);
+  formFilters.classList.remove(MAP_FILTERS_DISABLED);
 
   setDisabledState(disabledFields);
-  setCoordinates(address, {lat: 0, lng: 0}, 5);
+  setCoordinates(address, {lat: 0, lng: 0}, PRECISION);
 };
 
 // Функция перевода страницы в неактивное состояние
 const setPageToUnactive = () => {
-  adForm.classList.add('ad-form--disabled');
-  formFilters.classList.add('map__filters--disabled');
-
+  adForm.classList.add(AD_FORM_DISABLED);
+  formFilters.classList.add(MAP_FILTERS_DISABLED);
   setDisabledState(disabledFields);
 
   for (const filterItem of mapFiltersList) {
-    filterItem.setAttribute('disabled', true);
+    filterItem.disabled = true;
   }
 
-  setCoordinates(address, {lat: 0, lng: 0}, 5);
+  setCoordinates(address, {lat: 0, lng: 0}, PRECISION);
 };
 
 // Функция отправки формы (submit)
@@ -212,6 +215,7 @@ export {
   PRICE_LIST,
   price,
   MAIN_PIN_COORDINATES,
+  MAP_FILTERS_DISABLED,
   address,
   formPhoto,
   avatarPreview
