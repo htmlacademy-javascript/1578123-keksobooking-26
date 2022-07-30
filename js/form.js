@@ -39,6 +39,9 @@ const PRICE_LIST = {
 const IMG_WIDTH = 70;
 const IMG_HEIGHT = 70;
 
+// Preview по умолчанию
+const IMG_DEFAULT = 'img/muffin-grey.svg';
+
 const adForm = document.querySelector('.ad-form');
 const formFilters = document.querySelector('.map__filters');
 
@@ -65,13 +68,15 @@ const avatarPreview = formAvatar.querySelector('img').cloneNode(true);
 const avatarLoader = adForm.querySelector('#avatar');
 const photoLoader = adForm.querySelector('#images');
 
+const submitButton = adForm.querySelector('.ad-form__submit');
+
 // Синхронизации полей «Время заезда» и «Время выезда»
-const onTimeChange = (evt) => {
+const onTimeSectionChange = (evt) => {
   timeIn.value = evt.target.value;
   timeOut.value = evt.target.value;
 };
 
-timeSection.addEventListener('change', (evt) => onTimeChange(evt));
+timeSection.addEventListener('change', (evt) => onTimeSectionChange(evt));
 
 // Pristine validation
 const pristine = new Pristine(adForm, {
@@ -147,6 +152,12 @@ const getPhoto = (result) => {
   formPhoto.append(fragment);
 };
 
+// Очистить фотографии со страницы
+const clearPhotosFromPage = () => {
+  avatarPreview.src = IMG_DEFAULT;
+  formPhoto.innerHTML = '';
+};
+
 // Сценарий работы превью и аватарок
 const getAvatarPreview = () => renderPhoto(avatarLoader, getAvatar);
 const getPhotoPreview = () => renderPhoto(photoLoader, getPhoto);
@@ -176,6 +187,18 @@ const setPageToUnactive = () => {
   setCoordinates(address, {lat: 0, lng: 0}, PRECISION);
 };
 
+// Функция блокировки кнопки "Опубликовать"
+const blockSubmitBtn = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+// Функция разблокировки кнопки "Опубликовать"
+const unblockSubmitBtn = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 // Функция отправки формы (submit)
 const submitForm = (cb) => {
   adForm.addEventListener('submit', (evt) => {
@@ -185,17 +208,22 @@ const submitForm = (cb) => {
       return;
     }
 
+    blockSubmitBtn();
     const formData = new FormData(evt.target);
     sendData(() => {
       showModalSuccess();
+      unblockSubmitBtn();
       resetPage();
       cb();
-    }, showModalError, formData);
+    }, () => {
+      showModalError();
+      unblockSubmitBtn();
+    }, formData);
   });
 };
 
 // Обработчик кнопки сброса (reset)
-const onResetButtonClick = (cb) => {
+const onResetFormClick = (cb) => {
   resetForm.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetPage();
@@ -206,16 +234,15 @@ const onResetButtonClick = (cb) => {
 export {
   setPageToActive,
   setPageToUnactive,
-  onResetButtonClick,
+  onResetFormClick,
   onHouseTypeChange,
   submitForm,
+  clearPhotosFromPage,
   adForm,
   houseType,
   PRICE_LIST,
   price,
   MAIN_PIN_COORDINATES,
   MAP_FILTERS_DISABLED,
-  address,
-  formPhoto,
-  avatarPreview
+  address
 };

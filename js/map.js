@@ -1,5 +1,5 @@
 /** Модуль "Карта" **/
-import { adForm, address, MAIN_PIN_COORDINATES, avatarPreview, formPhoto, setPageToActive, onHouseTypeChange } from './form.js';
+import { adForm, address, MAIN_PIN_COORDINATES, setPageToActive, onHouseTypeChange, clearPhotosFromPage } from './form.js';
 import { setCoordinates } from './util.js';
 import { renderCard } from './offers.js';
 import { activateSlider, resetSlider } from './slider.js';
@@ -7,9 +7,6 @@ import { mapFilters } from './filter.js';
 
 // Масштаб (зум)
 const MAP_ZOOM = 12;
-
-// Preview по умолчанию
-const IMG_DEFAULT = 'img/muffin-grey.svg';
 
 // Главная иконка на карте
 const MAIN_PIN_ICON = L.icon({
@@ -68,8 +65,7 @@ const resetPage = () => {
   mainPinMarker.setLatLng(MAIN_PIN_COORDINATES);
   map.setView(MAIN_PIN_COORDINATES, MAP_ZOOM);
   adForm.reset();
-  avatarPreview.src = IMG_DEFAULT;
-  formPhoto.innerHTML = '';
+  clearPhotosFromPage();
   setCoordinates(address, mainPinMarker.getLatLng());
   onHouseTypeChange();
   resetSlider();
