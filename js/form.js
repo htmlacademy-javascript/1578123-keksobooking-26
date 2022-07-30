@@ -1,9 +1,14 @@
 /** Модуль "Формы" **/
-import { setDisabledState, setCoordinates, renderPhoto } from './util.js';
-import { resetPage } from './map.js';
+import { setDisabledState, setCoordinates, renderPhoto, PRECISION } from './util.js';
+import { resetSlider } from './slider.js';
+import { map, mainPinMarker, mapFilters, MAP_ZOOM, clearMarker } from './map.js';
 import { sendData } from './api.js';
 import { mapFiltersList } from './filter.js';
 import { showModalSuccess, showModalError } from './popup.js';
+
+// Константы для классов
+const AD_FORM_DISABLED = 'ad-form--disabled';
+const MAP_FILTERS_DISABLED = 'map__filters--disabled';
 
 // Координаты главной метки (по умолчанию)
 const MAIN_PIN_COORDINATES = {
@@ -35,10 +40,13 @@ const PRICE_LIST = {
 const IMG_WIDTH = 70;
 const IMG_HEIGHT = 70;
 
+// Preview по умолчанию
+const IMG_DEFAULT = 'img/muffin-grey.svg';
+
 const adForm = document.querySelector('.ad-form');
 const formFilters = document.querySelector('.map__filters');
 
-const disabledFields = adForm.querySelectorAll('select.map__filter', 'fieldset');
+const disabledFields = adForm.querySelectorAll('select.map__filter, fieldset');
 const resetForm = adForm.querySelector('.ad-form__reset');
 const address = adForm.querySelector('#address');
 
@@ -61,13 +69,15 @@ const avatarPreview = formAvatar.querySelector('img').cloneNode(true);
 const avatarLoader = adForm.querySelector('#avatar');
 const photoLoader = adForm.querySelector('#images');
 
+const submitButton = adForm.querySelector('.ad-form__submit');
+
 // Синхронизации полей «Время заезда» и «Время выезда»
-const onTimeChange = (evt) => {
+const onTimeSectionChange = (evt) => {
   timeIn.value = evt.target.value;
   timeOut.value = evt.target.value;
 };
 
-timeSection.addEventListener('change', (evt) => onTimeChange(evt));
+timeSection.addEventListener('change', (evt) => onTimeSectionChange(evt));
 
 // Pristine validation
 const pristine = new Pristine(adForm, {
@@ -143,6 +153,12 @@ const getPhoto = (result) => {
   formPhoto.append(fragment);
 };
 
+// Очистить фотографии со страницы
+const clearPhotosFromPage = () => {
+  avatarPreview.src = IMG_DEFAULT;
+  formPhoto.innerHTML = '';
+};
+
 // Сценарий работы превью и аватарок
 const getAvatarPreview = () => renderPhoto(avatarLoader, getAvatar);
 const getPhotoPreview = () => renderPhoto(photoLoader, getPhoto);
@@ -150,28 +166,50 @@ const getPhotoPreview = () => renderPhoto(photoLoader, getPhoto);
 getAvatarPreview();
 getPhotoPreview();
 
-
 // Функция перевода страницы в активное состояние
 const setPageToActive = () => {
-  adForm.classList.remove('ad-form--disabled');
-  formFilters.classList.remove('map__filters--disabled');
+  adForm.classList.remove(AD_FORM_DISABLED);
+  formFilters.classList.remove(MAP_FILTERS_DISABLED);
 
   setDisabledState(disabledFields);
-  setCoordinates(address, {lat: 0, lng: 0}, 5);
+  setCoordinates(address, {lat: 0, lng: 0}, PRECISION);
 };
 
 // Функция перевода страницы в неактивное состояние
 const setPageToUnactive = () => {
-  adForm.classList.add('ad-form--disabled');
-  formFilters.classList.add('map__filters--disabled');
-
+  adForm.classList.add(AD_FORM_DISABLED);
+  formFilters.classList.add(MAP_FILTERS_DISABLED);
   setDisabledState(disabledFields);
 
-  for (const filterItem of mapFiltersList) {
-    filterItem.setAttribute('disabled', true);
-  }
+  Array.from(mapFiltersList).forEach((filterItem) => {
+    filterItem.disabled = true;
+  });
 
-  setCoordinates(address, {lat: 0, lng: 0}, 5);
+  setCoordinates(address, {lat: 0, lng: 0}, PRECISION);
+};
+
+// Функция блокировки кнопки "Опубликовать"
+const blockSubmitBtn = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+// Функция разблокировки кнопки "Опубликовать"
+const unblockSubmitBtn = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const resetPage = () => {
+  mainPinMarker.setLatLng(MAIN_PIN_COORDINATES);
+  map.setView(MAIN_PIN_COORDINATES, MAP_ZOOM);
+  adForm.reset();
+  clearPhotosFromPage();
+  setCoordinates(address, mainPinMarker.getLatLng());
+  onHouseTypeChange();
+  resetSlider();
+  mapFilters.reset();
+  clearMarker();
 };
 
 // Функция отправки формы (submit)
@@ -183,17 +221,22 @@ const submitForm = (cb) => {
       return;
     }
 
+    blockSubmitBtn();
     const formData = new FormData(evt.target);
     sendData(() => {
       showModalSuccess();
+      unblockSubmitBtn();
       resetPage();
       cb();
-    }, showModalError, formData);
+    }, () => {
+      showModalError();
+      unblockSubmitBtn();
+    }, formData);
   });
 };
 
 // Обработчик кнопки сброса (reset)
-const onResetButtonClick = (cb) => {
+const onResetFormClick = (cb) => {
   resetForm.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetPage();
@@ -204,15 +247,15 @@ const onResetButtonClick = (cb) => {
 export {
   setPageToActive,
   setPageToUnactive,
-  onResetButtonClick,
+  onResetFormClick,
   onHouseTypeChange,
   submitForm,
+  clearPhotosFromPage,
   adForm,
   houseType,
   PRICE_LIST,
   price,
   MAIN_PIN_COORDINATES,
-  address,
-  formPhoto,
-  avatarPreview
+  MAP_FILTERS_DISABLED,
+  address
 };

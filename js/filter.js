@@ -1,6 +1,7 @@
 /** Модуль "Фильтры" **/
 
 import { createMarker, clearMarker } from './map.js';
+import { MAP_FILTERS_DISABLED } from './form.js';
 
 const OFFERS_COUNT = 10;
 const INIT_VALUE = 'any';
@@ -30,11 +31,11 @@ const featuresFilter = mapFilters.querySelectorAll('.map__checkbox');
 
 // Активное состояние фильтра для карты
 const activateMapFilters = () => {
-  mapFilters.classList.remove('map__filters--disabled');
+  mapFilters.classList.remove(MAP_FILTERS_DISABLED);
 
-  for (const filterItem of mapFiltersList) {
-    filterItem.removeAttribute('disabled');
-  }
+  Array.from(mapFiltersList).forEach((filterItem) => {
+    filterItem.disabled = false;
+  });
 };
 
 // Функция проверки фильтра удобств
@@ -56,11 +57,10 @@ const checkGuests = (el) => el.offer.guests === Number(guestsFilter.value) || gu
 // Функция проверки всех фильтров
 const checkAllFilters = (data)  => {
   const filteredData = [];
-  for (let i = 0; i < data.length; i++) {
-    const elem = data[i];
-    if (checkType(elem) && checkPrice(elem) && checkRooms(elem) && checkGuests(elem) && checkFeatures(elem)) {
-      createMarker(elem);
-      filteredData.push(elem);
+  for (const offer of data) {
+    if (checkType(offer) && checkPrice(offer) && checkRooms(offer) && checkGuests(offer) && checkFeatures(offer)) {
+      createMarker(offer);
+      filteredData.push(offer);
     }
 
     if (filteredData.length === OFFERS_COUNT) {

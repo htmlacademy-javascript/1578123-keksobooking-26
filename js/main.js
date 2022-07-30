@@ -2,10 +2,11 @@
 
 import { renderMap, mainPinMarkerCoordinates } from './map.js';
 import { disableSlider } from './slider.js';
-import { setPageToUnactive, onResetButtonClick, submitForm } from './form.js';
+import { setPageToUnactive, onResetFormClick, submitForm } from './form.js';
 import { getData } from './api.js';
 import { activateMapFilters, checkAllFilters, changeFilters } from './filter.js';
 import { debounce } from './util.js';
+import { showModalError } from './popup.js';
 
 // Задержка ("устранение дребезга")
 const DELAY_TIME = 500;
@@ -20,7 +21,7 @@ getData((offers) => {
   changeFilters(debounce(() => checkAllFilters(offers), DELAY_TIME));
   activateMapFilters(); // При успешной загрузке карты фильтр для карты переключается в активное состояние
   submitForm(() => checkAllFilters(offers));
-  onResetButtonClick(() => checkAllFilters(offers));
-});
+  onResetFormClick(() => checkAllFilters(offers));
+}, showModalError);
 
 

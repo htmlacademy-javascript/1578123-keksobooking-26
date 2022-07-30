@@ -7,7 +7,7 @@ const errorButton = errorPopup.querySelector('.error__button');
 
 // Функция показа модального окна при успешной отправке формы
 const showModalSuccess = () => {
-  document.body.appendChild(successPopup);
+  document.body.append(successPopup);
 
   const onEscapeClick = (evt) => {
     if (evt.key === 'Escape') {
@@ -27,7 +27,7 @@ const showModalSuccess = () => {
 // Функция показа модального окна при неудачной отправке формы
 const showModalError = () => {
   popupErrorMessage.textContent = 'Ошибка загрузки данных';
-  document.body.appendChild(errorPopup);
+  document.body.append(errorPopup);
 
   const onEscapeClick = (evt) => {
     if (evt.key === 'Escape') {
