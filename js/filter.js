@@ -33,9 +33,9 @@ const featuresFilter = mapFilters.querySelectorAll('.map__checkbox');
 const activateMapFilters = () => {
   mapFilters.classList.remove(MAP_FILTERS_DISABLED);
 
-  for (const filterItem of mapFiltersList) {
+  Array.from(mapFiltersList).forEach((filterItem) => {
     filterItem.disabled = false;
-  }
+  });
 };
 
 // Функция проверки фильтра удобств

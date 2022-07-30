@@ -1,7 +1,7 @@
 /** Модуль взаимодействия с сервером **/
 
 const urls = {
-  //LOAD: 'https://26.javascript.pages.academy/keksobooking/data', // url для получения данных с сервера
+  LOAD: 'https://26.javascript.pages.academy/keksobooking/data', // url для получения данных с сервера
   UPLOAD: 'https://26.javascript.pages.academy/keksobooking' // url для отправки данных из формы на сервер
 };
 

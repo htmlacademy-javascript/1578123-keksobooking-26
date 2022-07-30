@@ -6,6 +6,7 @@ import { setPageToUnactive, onResetButtonClick, submitForm } from './form.js';
 import { getData } from './api.js';
 import { activateMapFilters, checkAllFilters, changeFilters } from './filter.js';
 import { debounce } from './util.js';
+import { showModalError } from './popup.js';
 
 // Задержка ("устранение дребезга")
 const DELAY_TIME = 500;
@@ -21,6 +22,6 @@ getData((offers) => {
   activateMapFilters(); // При успешной загрузке карты фильтр для карты переключается в активное состояние
   submitForm(() => checkAllFilters(offers));
   onResetButtonClick(() => checkAllFilters(offers));
-});
+}, showModalError);
 
 

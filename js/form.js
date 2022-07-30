@@ -154,7 +154,6 @@ const getPhotoPreview = () => renderPhoto(photoLoader, getPhoto);
 getAvatarPreview();
 getPhotoPreview();
 
-
 // Функция перевода страницы в активное состояние
 const setPageToActive = () => {
   adForm.classList.remove(AD_FORM_DISABLED);
@@ -170,9 +169,9 @@ const setPageToUnactive = () => {
   formFilters.classList.add(MAP_FILTERS_DISABLED);
   setDisabledState(disabledFields);
 
-  for (const filterItem of mapFiltersList) {
+  Array.from(mapFiltersList).forEach((filterItem) => {
     filterItem.disabled = true;
-  }
+  });
 
   setCoordinates(address, {lat: 0, lng: 0}, PRECISION);
 };
