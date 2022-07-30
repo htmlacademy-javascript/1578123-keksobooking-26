@@ -1,8 +1,10 @@
 /** Модуль "Слайдер" **/
 
-import { adForm, houseType, PRICE_LIST as priceList, price } from './form.js';
+import { PRICE_LIST as priceList } from './form.js';
 
-const sliderElement = adForm.querySelector('.ad-form__slider');
+const sliderElement = document.querySelector('.ad-form__slider');
+const houseType = document.querySelector('#type');
+const price = document.querySelector('#price');
 
 noUiSlider.create(sliderElement, {
   range: {

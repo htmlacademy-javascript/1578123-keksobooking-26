@@ -1,8 +1,8 @@
 /** Модуль "Карта" **/
-import { adForm, address, MAIN_PIN_COORDINATES, setPageToActive, onHouseTypeChange, clearPhotosFromPage } from './form.js';
+import { address, MAIN_PIN_COORDINATES, setPageToActive } from './form.js';
 import { setCoordinates } from './util.js';
 import { renderCard } from './offers.js';
-import { activateSlider, resetSlider } from './slider.js';
+import { activateSlider } from './slider.js';
 import { mapFilters } from './filter.js';
 
 // Масштаб (зум)
@@ -61,7 +61,7 @@ const createMarker = (data) => {
 const clearMarker = () => markerGroup.clearLayers();
 
 // Функция возврата страницы к начальному состоянию (сброс)
-const resetPage = () => {
+/*const resetPage = () => {
   mainPinMarker.setLatLng(MAIN_PIN_COORDINATES);
   map.setView(MAIN_PIN_COORDINATES, MAP_ZOOM);
   adForm.reset();
@@ -71,7 +71,7 @@ const resetPage = () => {
   resetSlider();
   mapFilters.reset();
   clearMarker();
-};
+};*/
 
-export {renderMap, mainPinMarkerCoordinates, resetPage, createMarker, clearMarker};
+export {MAP_ZOOM, mainPinMarker, map, mapFilters, renderMap, mainPinMarkerCoordinates, createMarker, clearMarker};
 

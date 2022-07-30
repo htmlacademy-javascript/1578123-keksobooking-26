@@ -1,6 +1,7 @@
 /** Модуль "Формы" **/
 import { setDisabledState, setCoordinates, renderPhoto, PRECISION } from './util.js';
-import { resetPage } from './map.js';
+import { resetSlider } from './slider.js';
+import { map, mainPinMarker, mapFilters, MAP_ZOOM, clearMarker } from './map.js';
 import { sendData } from './api.js';
 import { mapFiltersList } from './filter.js';
 import { showModalSuccess, showModalError } from './popup.js';
@@ -197,6 +198,18 @@ const blockSubmitBtn = () => {
 const unblockSubmitBtn = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
+};
+
+const resetPage = () => {
+  mainPinMarker.setLatLng(MAIN_PIN_COORDINATES);
+  map.setView(MAIN_PIN_COORDINATES, MAP_ZOOM);
+  adForm.reset();
+  clearPhotosFromPage();
+  setCoordinates(address, mainPinMarker.getLatLng());
+  onHouseTypeChange();
+  resetSlider();
+  mapFilters.reset();
+  clearMarker();
 };
 
 // Функция отправки формы (submit)
