@@ -60,18 +60,5 @@ const createMarker = (data) => {
 // Функция очистки слоя с метками
 const clearMarker = () => markerGroup.clearLayers();
 
-// Функция возврата страницы к начальному состоянию (сброс)
-/*const resetPage = () => {
-  mainPinMarker.setLatLng(MAIN_PIN_COORDINATES);
-  map.setView(MAIN_PIN_COORDINATES, MAP_ZOOM);
-  adForm.reset();
-  clearPhotosFromPage();
-  setCoordinates(address, mainPinMarker.getLatLng());
-  onHouseTypeChange();
-  resetSlider();
-  mapFilters.reset();
-  clearMarker();
-};*/
-
 export {MAP_ZOOM, mainPinMarker, map, mapFilters, renderMap, mainPinMarkerCoordinates, createMarker, clearMarker};
 
